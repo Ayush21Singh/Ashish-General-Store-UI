@@ -40,3 +40,26 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Ignore build and binary files
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.suo
+*.user
+*.vscode/
+*.vs/
+
+# Ignore logs and temp files
+*.log
+*.tmp
+
+# Ignore environment files
+.env
+.env.local
+
+# Ignore dependency folders
+node_modules/
+packages/
