@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Users</h2>
+  <div *ngIf="loading" class="text-center mt-5">Loading...</div>
+
+  <!-- Desktop: Table, Mobile: Cards -->
+  <div class="d-none d-md-block" *ngIf="!loading">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.phoneNumber }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-md-none" *ngIf="!loading">
+    <div class="row row-cols-1 g-3">
+      <div *ngFor="let user of users" class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ user.username }} (ID: {{ user.id }})</h5>
+            <p class="card-text">
+              <strong>Name:</strong> {{ user.name }}<br>
+              <strong>Phone:</strong> {{ user.phoneNumber }}<br>
+              <strong>Email:</strong> {{ user.email }}<br>
+              <strong>Role:</strong> {{ user.role }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

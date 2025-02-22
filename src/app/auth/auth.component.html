@@ -1,0 +1,21 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="card shadow p-4 w-100" style="max-width: 400px;">
+    <h2 class="card-title text-center mb-4">Login</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input [(ngModel)]="username" name="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input [(ngModel)]="password" name="password" type="password" class="form-control" required>
+      </div>
+      <div *ngIf="error" class="text-danger mb-3">{{ error }}</div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <div *ngIf="forceLoginPrompt" class="mt-3 text-center">
+      <p class="text-warning">{{ forceLoginPrompt.message }}</p>
+      <button class="btn btn-outline-danger w-100" (click)="onForceLogin()">Force Login</button>
+    </div>
+  </div>
+</div>

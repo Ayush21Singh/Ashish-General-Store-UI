@@ -1,0 +1,119 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Products</h2>
+  <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#productModal" (click)="openCreateModal()">Add Product</button>
+  <div *ngIf="loading" class="text-center mt-5">Loading...</div>
+
+  <!-- Desktop: Table, Mobile: Cards -->
+  <div class="d-none d-md-block" *ngIf="!loading">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Single Price</th>
+          <th>Bulk Price</th>
+          <th>Bulk Qty</th>
+          <th>Stock</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.singleUnitPrice }}</td>
+          <td>{{ product.bulkUnitPrice }}</td>
+          <td>{{ product.bulkQuantity }}</td>
+          <td>{{ product.stock }}</td>
+          <td>{{ product.categoryName }}</td>
+          <td>{{ product.description }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#productModal" (click)="openEditModal(product)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-md-none" *ngIf="!loading">
+    <div class="row row-cols-1 g-3">
+      <div *ngFor="let product of products" class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }} (ID: {{ product.id }})</h5>
+            <p class="card-text">
+              <strong>Single Price:</strong> {{ product.singleUnitPrice }}<br>
+              <strong>Bulk Price:</strong> {{ product.bulkUnitPrice }} (Qty: {{ product.bulkQuantity }})<br>
+              <strong>Stock:</strong> {{ product.stock }}<br>
+              <strong>Category:</strong> {{ product.categoryName }}<br>
+              <strong>Description:</strong> {{ product.description }}
+            </p>
+            <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#productModal" (click)="openEditModal(product)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Create/Edit -->
+  <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productModalLabel">{{ editMode ? 'Edit Product' : 'Add Product' }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input formControlName="name" class="form-control" [class.is-invalid]="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+              <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="invalid-feedback">Name is required.</div>
+            </div>
+            <div class="mb-3 row">
+              <div class="col-12 col-md-6">
+                <label class="form-label">Single Unit Price</label>
+                <input type="number" formControlName="singleUnitPrice" class="form-control" [class.is-invalid]="productForm.get('singleUnitPrice')?.invalid && productForm.get('singleUnitPrice')?.touched">
+                <div *ngIf="productForm.get('singleUnitPrice')?.invalid && productForm.get('singleUnitPrice')?.touched" class="invalid-feedback">Valid price required.</div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">Bulk Unit Price</label>
+                <input type="number" formControlName="bulkUnitPrice" class="form-control" [class.is-invalid]="productForm.get('bulkUnitPrice')?.invalid && productForm.get('bulkUnitPrice')?.touched">
+                <div *ngIf="productForm.get('bulkUnitPrice')?.invalid && productForm.get('bulkUnitPrice')?.touched" class="invalid-feedback">Valid price required.</div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <div class="col-12 col-md-6">
+                <label class="form-label">Bulk Quantity</label>
+                <input type="number" formControlName="bulkQuantity" class="form-control" [class.is-invalid]="productForm.get('bulkQuantity')?.invalid && productForm.get('bulkQuantity')?.touched">
+                <div *ngIf="productForm.get('bulkQuantity')?.invalid && productForm.get('bulkQuantity')?.touched" class="invalid-feedback">Minimum 1 required.</div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">Stock</label>
+                <input type="number" formControlName="stock" class="form-control" [class.is-invalid]="productForm.get('stock')?.invalid && productForm.get('stock')?.touched">
+                <div *ngIf="productForm.get('stock')?.invalid && productForm.get('stock')?.touched" class="invalid-feedback">Valid stock required.</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Category</label>
+              <select formControlName="categoryId" class="form-select" [class.is-invalid]="productForm.get('categoryId')?.invalid && productForm.get('categoryId')?.touched">
+                <option [ngValue]="null" disabled>Select a category</option>
+                <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.name }}</option>
+              </select>
+              <div *ngIf="productForm.get('categoryId')?.invalid && productForm.get('categoryId')?.touched" class="invalid-feedback">Category is required.</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea formControlName="description" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" [disabled]="productForm.invalid">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
