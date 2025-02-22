@@ -12,7 +12,7 @@ Angular frontend for the Ashish General Store admin dashboard. Features include 
 - [Node.js 16.20.2](https://nodejs.org/en/blog/release/v16.20.2) (or compatible)
 - [npm 8.19.4](https://www.npmjs.com/package/npm/v/8.19.4)
 - [Angular CLI 15.2.11](https://angular.io/cli) (`npm install -g @angular/cli@15.2.11`)
-- Backend: [AshishGeneralStore Core](https://github.com/yourusername/AshishGeneralStore)
+- Backend: [AshishGeneralStore Core](https://github.com/Ayush21Singh/Retailer-Shop)
 
 ## Setup Instructions
 1. **Clone the Repository**:
